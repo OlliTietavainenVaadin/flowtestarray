@@ -1,0 +1,50 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="array-test">
+    <template>
+        <div>
+            <h2>Itemss</h2>
+            <template is="dom-repeat" items="[[itemlist]]">
+                <div>item: [[item]]</div>
+            </template>
+            <button on-click="print">print on server</button>
+            <button on-click="add">add to list</button>
+        </div>
+    </template>
+
+    <script>
+        class ArrayTest extends Polymer.Element {
+            static get is() {
+                return 'array-test';
+            }
+
+            static get properties() {
+                return {
+                    itemlist: {
+                        type: Array,
+                        value: function () {
+                            return [1,2,3];
+                        },
+                        notify: true,
+                        observer: 'itemlistChanged'
+                    }
+                };
+            }
+
+            itemlistChanged(newValue, oldValue) {
+                console.log("itemlist changed on the client: " + newValue);
+            }
+
+            add() {
+                console.log("adding, itemlist=" + this.itemlist);
+                this.push("itemlist",0);
+            }
+
+            print() {
+                this.$server.print();
+            }
+        }
+
+        customElements.define(ArrayTest.is, ArrayTest);
+    </script>
+</dom-module>
