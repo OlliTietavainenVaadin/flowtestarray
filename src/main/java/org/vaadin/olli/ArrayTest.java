@@ -23,9 +23,11 @@ public class ArrayTest extends PolymerTemplate<ArrayTest.ArrayTestModel> {
      * Creates a new ArrayTest.
      */
     public ArrayTest() {
+        getElement().synchronizeProperty("itemlist","itemlist-changed");
+        getElement().synchronizeProperty("itemlist","changed");
         getElement().synchronizeProperty("itemlist","change");
         getElement().addPropertyChangeListener("itemlist", e->{
-            System.out.println("Itemlist changed");
+            System.out.println("Itemlist changed: " + getItems());
         });
     }
 
@@ -36,12 +38,7 @@ public class ArrayTest extends PolymerTemplate<ArrayTest.ArrayTestModel> {
         return itemlist;
     }
 
-    @ClientCallable
-    public void print() {
-        System.out.println("itemlist property: " + getElement().getProperty("itemlist"));
-    }
-
-    /**
+       /**
      * This model binds properties between ArrayTest and array-test.html
      */
     public interface ArrayTestModel extends TemplateModel {

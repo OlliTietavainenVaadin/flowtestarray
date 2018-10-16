@@ -3,16 +3,20 @@
 <dom-module id="array-test">
     <template>
         <div>
-            <h2>Itemss</h2>
+            <h2>Items</h2>
             <template is="dom-repeat" items="[[itemlist]]">
                 <div>item: [[item]]</div>
             </template>
-            <button on-click="print">print on server</button>
             <button on-click="add">add to list</button>
         </div>
     </template>
 
     <script>
+        /* alternatively:
+        class ArrayTest extends Polymer.MutableData(Polymer.Element) {
+         - this makes observers fire on the element on array change,
+         but server is still not getting the updated property
+         */
         class ArrayTest extends Polymer.Element {
             static get is() {
                 return 'array-test';
@@ -23,25 +27,15 @@
                     itemlist: {
                         type: Array,
                         value: function () {
-                            return [1,2,3];
+                            return [1, 2, 3];
                         },
-                        notify: true,
-                        observer: 'itemlistChanged'
+                        notify: true
                     }
                 };
             }
 
-            itemlistChanged(newValue, oldValue) {
-                console.log("itemlist changed on the client: " + newValue);
-            }
-
             add() {
-                console.log("adding, itemlist=" + this.itemlist);
-                this.push("itemlist",0);
-            }
-
-            print() {
-                this.$server.print();
+                this.push("itemlist", 0);
             }
         }
 
